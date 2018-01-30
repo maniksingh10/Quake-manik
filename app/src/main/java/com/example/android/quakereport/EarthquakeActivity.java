@@ -10,6 +10,8 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -28,9 +30,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     private static final int EARTHQUAKE_LOADER_ID = 1;
     private static final String USGS_REQUEST_URL =
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2016-01-01&orderby=time&minmag=1&limit=300&maxlatitude=33.211&minlatitude=16.13&maxlongitude=87.012&minlongitude=70.4";
-
     private EarthquakeAdapter mAdapter;
-
     private TextView mEmptyStateTextView;
 
 
@@ -57,26 +57,17 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
                 // Find the current earthquake that was clicked on
                 final ObjectL currentEarthquake = mAdapter.getItem(position);
 
-                AlertDialog.Builder ad = new AlertDialog.Builder(EarthquakeActivity.this);
-                ad.setMessage("Want more information??")
-                        .setTitle("Information")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // Convert the String URL into a URI object (to pass into the Intent constructor)
-                                Uri earthquakeUri = Uri.parse(currentEarthquake.getUrl());
-                                // Create a new intent to view the earthquake URI
-                                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, earthquakeUri);
-                                // Send the intent to launch a new activity
-                                startActivity(websiteIntent);
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        })
-                        .show();
+                Uri earthquakeUri = Uri.parse(currentEarthquake.getUrl());
+
+                CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+                intentBuilder.setToolbarColor(ContextCompat.getColor(EarthquakeActivity.this, R.color.colorPrimary));
+                intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(EarthquakeActivity.this, R.color.colorPrimaryDark));
+                intentBuilder.setStartAnimations(EarthquakeActivity.this, R.anim.slide_in_right, R.anim.slide_out_left);
+                intentBuilder.setExitAnimations(EarthquakeActivity.this, android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right);
+                CustomTabsIntent customTabsIntent = intentBuilder.build();
+
+                customTabsIntent.launchUrl(EarthquakeActivity.this, earthquakeUri);
             }
         });
 
