@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2016 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.example.android.quakereport;
 
 import android.text.TextUtils;
@@ -35,23 +20,22 @@ import java.util.List;
 
 import static com.example.android.quakereport.EarthquakeActivity.LOG_TAG;
 
-/**
- * Helper methods related to requesting and receiving earthquake data from USGS.
- */
+//Helper methods related to requesting and receiving earthquake data from USGS.
+
 public final class QueryUtils {
 
 
-    /*** Create a private constructor because no one should ever create a {@link QueryUtils} object.
-     * This class is only meant to hold static variables and methods, which can be accessed
-     * directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
-     */
+    //Create a private constructor because no one should ever create a {@link QueryUtils} object
+    //This class is only meant to hold static variables and methods, which can be accessed
+    //directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
+
     private QueryUtils() {
     }
 
-    /**
-     * Return a list of {@link ObjectL} objects that has been built up from
-     * parsing a JSON response.
-     */
+
+    //Return a list of {@link ObjectL} objects that has been built up from
+    //parsing a JSON response.
+
     public static List<ObjectL> extractEarthquakesFromJSON(String earthJSON) {
 
         if (TextUtils.isEmpty(earthJSON)) {
@@ -168,10 +152,7 @@ public final class QueryUtils {
         return jsonResponse;
     }
 
-    /**
-     * Convert the {@link InputStream} into a String which contains the
-     * whole JSON response from the server.
-     */
+    //Convert the {@link InputStream} into a String which contains the whole JSON response from the server.
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
@@ -186,9 +167,7 @@ public final class QueryUtils {
         return output.toString();
     }
 
-    /**
-     * Query the USGS dataset and return a list of {@link ObjectL} objects.
-     */
+    //Query the USGS dataset and return a list of {@link ObjectL} objects.
     public static List<ObjectL> fetchEarthquakeData(String requestUrl) {
 
         try {
@@ -214,6 +193,4 @@ public final class QueryUtils {
         // Return the list of {@link Earthquake}s
         return earthquakes;
     }
-
-
 }
